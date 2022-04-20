@@ -1,5 +1,5 @@
 """
-User interface for quick download of YouTube videos
+User interface download of YouTube videos
 """
 import sys
 
@@ -9,11 +9,13 @@ from PySide6.QtWidgets import (QApplication, QWidget, QFileDialog, QStatusBar,
                                QLabel, QPushButton, QLineEdit)
 from PySide6.QtCore import Signal
 
+import fun
+
 
 class Main(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("YouTube Downloader")
+        self.setWindowTitle("Video Downloader")
         self.central_widget = CentralFrame(self)
         self.status_bar = StatusBar(self)
         self.setup_layout()
@@ -28,16 +30,10 @@ class Main(QWidget):
         lay.addWidget(self.status_bar)
         lay.setSpacing(0)
         lay.setContentsMargins(0,0,0,0)        
-        self.setLayout(lay)
-        custom_style_sheet = """
-        QWidget{background-color: white;
-                padding: 2px}
-
-        QLineEdit={
-                   background-color: lightblue;
-                   }
-        """
-        self.setStyleSheet(custom_style_sheet)
+        self.setLayout(lay)        
+        with open("src/style.qss","r") as f:            
+            custom_style_sheet = f.read()
+            self.setStyleSheet(custom_style_sheet)        
 
 
 class CentralFrame(QWidget):
@@ -94,15 +90,19 @@ class CentralFrame(QWidget):
 
         link = self.video_link.text()        
 
-        if check_youtube_url(link):
-            yt = YouTube(link)
+        if fun.check_youtube_url(link):
+            # TODO: check if its working and delete comments
+            # yt = YouTube(link)
+            # txt = '\nTitle: ' + yt.title + '\n' \
+            #       'Author: ' + yt.author + '\n' \
+            #       'Duration: ' + str(yt.length) +' seconds' + '\n' \
+            #       'Pubished on ' + yt.publish_date.strftime("%B %d, %Y") + '\n' \
+            #       'Views: %d' % yt.views
+            # self.video_info.setText(''.join(txt))  
 
-            txt = '\nTitle: ' + yt.title + '\n' \
-                  'Author: ' + yt.author + '\n' \
-                  'Duration: ' + str(yt.length) +' seconds' + '\n' \
-                  'Pubished on ' + yt.publish_date.strftime("%B %d, %Y") + '\n' \
-                  'Views: %d' % yt.views
-            self.video_info.setText(''.join(txt))   
+            txt = fun.get_video_info(link)
+            self.video_info.setText(txt)
+
             self.send_message.emit('URL provided is valid', 5000)         
         else:
             self.send_message.emit('Invalid url', 5000)
@@ -112,13 +112,9 @@ class CentralFrame(QWidget):
         link = self.video_link.text()
         path = self.path.text()
 
-        if check_youtube_url(link):
+        if fun.check_youtube_url(link):        
             self.send_message.emit('Download started...', 5000)            
-            yt=YouTube(link)
-            # Get the highest resolution    
-            ys=yt.streams.get_highest_resolution()    
-            #download
-            ys.download(path)
+            fun.import_video(link, path)
             self.video_info.setText('')
             self.send_message.emit('Video sucessfully downloaded', 5000)
         else:
@@ -128,14 +124,10 @@ class CentralFrame(QWidget):
 class StatusBar(QStatusBar):
     def __init__(self, parent=None):
         super().__init__(parent)
-        # License
+        # Display copyright and Version
         self.lic = QLabel(self)
-        self.lic.setText("(C) 2022 Jean Poletto ")
+        self.lic.setText("(C) 2022 poletts | v 0.0.1 ")
         self.addPermanentWidget(self.lic)
-        # Version
-        self.version = QLabel(self)
-        self.version.setText(" v0.0.1 ")
-        self.addPermanentWidget(self.version)        
         self.showMessage('Welcome', 3000)
     
     def update(self, text:str = None) -> None:
@@ -144,29 +136,6 @@ class StatusBar(QStatusBar):
 
     def clean(self):
         self.clearMessage()
-
-
-def check_youtube_url(url:str) -> bool:
-    """
-    Check wheter an url is accessible by pytube.YouTube module
-
-    Parameters:
-    -----------
-    url : str
-        url for YouTube video
-
-    Return:
-    -------
-    bool
-        True if url is acessible
-        False if url is not accessible
-    """
-    try:
-        YouTube(url)
-        status = True
-    except:
-        status = False
-    return status
 
 
 if __name__ == "__main__":

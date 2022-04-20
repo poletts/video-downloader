@@ -1,0 +1,15 @@
+QWidget {
+    background-color: #ba817d;
+    font-size: 14px;
+}
+
+QLineEdit{
+    background-color: white;
+}
+
+QPushButton{
+    background-color: white;
+    qproperty-alignment: AlignCenter
+    padding: 10px;    
+    selection-color: yellow;
+}
