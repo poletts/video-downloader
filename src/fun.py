@@ -68,7 +68,7 @@ def get_video_info(link:str) -> str:
     txt = '\nTitle: ' + yt.title + '\n' \
           'Author: ' + yt.author + '\n' \
           'Duration: ' + str(yt.length) +' seconds' + '\n' \
-          'Pubished on ' + yt.publish_date.strftime("%B %d, %Y") + '\n' \
+          'Published on ' + yt.publish_date.strftime("%B %d, %Y") + '\n' \
           'Views: %d' % yt.views
 
     return ''.join(txt)

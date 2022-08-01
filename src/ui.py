@@ -88,21 +88,10 @@ class CentralFrame(QWidget):
     def display_info(self):
         """Display video info on screen"""
 
-        link = self.video_link.text()        
-
+        link = self.video_link.text()
         if fun.check_youtube_url(link):
-            # TODO: check if its working and delete comments
-            # yt = YouTube(link)
-            # txt = '\nTitle: ' + yt.title + '\n' \
-            #       'Author: ' + yt.author + '\n' \
-            #       'Duration: ' + str(yt.length) +' seconds' + '\n' \
-            #       'Pubished on ' + yt.publish_date.strftime("%B %d, %Y") + '\n' \
-            #       'Views: %d' % yt.views
-            # self.video_info.setText(''.join(txt))  
-
             txt = fun.get_video_info(link)
             self.video_info.setText(txt)
-
             self.send_message.emit('URL provided is valid', 5000)         
         else:
             self.send_message.emit('Invalid url', 5000)
@@ -126,7 +115,7 @@ class StatusBar(QStatusBar):
         super().__init__(parent)
         # Display copyright and Version
         self.lic = QLabel(self)
-        self.lic.setText("(C) 2022 poletts | v 0.0.1 ")
+        self.lic.setText("\xa9 2022 poletts | v 0.0.1 ")
         self.addPermanentWidget(self.lic)
         self.showMessage('Welcome', 3000)
     

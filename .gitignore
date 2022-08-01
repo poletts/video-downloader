@@ -1,8 +1,6 @@
 # Environments
 .venv
 
-# VS code
-.vscode
-
-# PyCharm
-.idea
+# Exe distributors
+build
+dist
