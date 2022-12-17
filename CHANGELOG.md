@@ -1,3 +1,7 @@
+# [1.0.1] - 2022-07-30
+## TODO
+- single exe file not working: pyinstaller cannot find file src/style.qss
+
 # [1.0.0] - 2022-07-01
 
 ## Added

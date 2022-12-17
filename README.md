@@ -5,5 +5,11 @@ A standalone application for downloading videos from YouTube based on the [pytub
 - Select video destination folder
 - Check video information (enter) and download it with the hit of a button
 
+## Dependencies
+- pytube
+- PySide6
+
+
+
 ## Contributors
 - [Jean Poletto](https://github.com/poletts)

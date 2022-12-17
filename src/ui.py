@@ -1,15 +1,17 @@
 """
 User interface download of YouTube videos
 """
-import sys
+import sys, os
 
-from pytube import YouTube
+if __name__ == "__main__":
+    sys.path.append(os.path.abspath('.'))
+
 from PySide6.QtWidgets import (QApplication, QWidget, QFileDialog, QStatusBar,
                                QVBoxLayout, QHBoxLayout,                                
                                QLabel, QPushButton, QLineEdit)
 from PySide6.QtCore import Signal
 
-import fun
+from src import fun
 
 
 class Main(QWidget):
@@ -22,7 +24,6 @@ class Main(QWidget):
         self.resize(600, 400)  
         # connect signal in CentralFrame to slot in StatusBar
         self.central_widget.send_message.connect(self.status_bar.showMessage)
-        self.show()
     
     def setup_layout(self):
         lay = QVBoxLayout()
@@ -31,7 +32,7 @@ class Main(QWidget):
         lay.setSpacing(0)
         lay.setContentsMargins(0,0,0,0)        
         self.setLayout(lay)        
-        with open("src/style.qss","r") as f:            
+        with open('src\style.qss',"r") as f:            
             custom_style_sheet = f.read()
             self.setStyleSheet(custom_style_sheet)        
 
@@ -132,5 +133,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     main = Main()
+    main.show()
 
     sys.exit(app.exec())
