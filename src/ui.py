@@ -11,8 +11,31 @@ from PySide6.QtWidgets import (QApplication, QWidget, QFileDialog, QStatusBar,
                                QLabel, QPushButton, QLineEdit)
 from PySide6.QtCore import Signal
 
-from src import fun
+import fun
 
+custom_style_sheet = """
+    QWidget {
+        background-color: #282828;
+        font-size: 14px;
+        color: #ffffff;
+    }
+
+    QLineEdit{
+        background-color: #ff0000;
+        color: #ffffff;
+        border-radius: 5px;
+        padding: 2px;
+        alignment: AlignCenter;
+    }
+
+    QPushButton{
+        background-color: white;
+        qproperty-alignment: AlignCenter
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+"""
 
 class Main(QWidget):
     def __init__(self, parent=None):
@@ -31,10 +54,11 @@ class Main(QWidget):
         lay.addWidget(self.status_bar)
         lay.setSpacing(0)
         lay.setContentsMargins(0,0,0,0)        
-        self.setLayout(lay)        
-        with open('src\style.qss',"r") as f:            
-            custom_style_sheet = f.read()
-            self.setStyleSheet(custom_style_sheet)        
+        self.setLayout(lay)      
+        self.setStyleSheet(custom_style_sheet)    
+        # with open('src\style.qss',"r") as f:            
+        #     custom_style_sheet = f.read()
+        #     self.setStyleSheet(custom_style_sheet)        
 
 
 class CentralFrame(QWidget):
@@ -116,7 +140,7 @@ class StatusBar(QStatusBar):
         super().__init__(parent)
         # Display copyright and Version
         self.lic = QLabel(self)
-        self.lic.setText("\xa9 2022 poletts | v 0.0.1 ")
+        self.lic.setText("\xa9 2022 poletts | v 0.0.2 ")
         self.addPermanentWidget(self.lic)
         self.showMessage('Welcome', 3000)
     
